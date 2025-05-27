@@ -1,4 +1,5 @@
 package com.example.demo.entity;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,77 +32,75 @@ public class Course {
     @JsonIgnore
     private List<Questions> questions;
 
-	public List<Questions> getQuestions() {
-		return questions;
-	}
+    public List<Questions> getQuestions() {
+        return questions;
+    }
 
-	public void setQuestions(List<Questions> questions) {
-		this.questions = questions;
-	}
+    public void setQuestions(List<Questions> questions) {
+        this.questions = questions;
+    }
 
-	public Long getId() {
-		return course_id;
-	}
+    public Long getId() {
+        return course_id;
+    }
 
-	public void setId(Long id) {
-		this.course_id = id;
-	}
+    public void setId(Long id) {
+        this.course_id = id;
+    }
 
-	public String getCourseName() {
-		return course_name;
-	}
+    public String getCourseName() {
+        return course_name;
+    }
 
-	public void setCourseName(String courseName) {
-		this.course_name = courseName;
-	}
+    public void setCourseName(String courseName) {
+        this.course_name = courseName;
+    }
 
-	public List<Feedback> getFeedbacks() {
-		return feedbacks;
-	}
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
 
-	public void setFeedbacks(List<Feedback> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
+    public void setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 
-	public String getPhoto() {
-		return p_link;
-	}
+    public String getPhoto() {
+        return p_link;
+    }
 
-	public void setPhoto(String photo) {
-		this.p_link = photo;
-	}
+    public void setP_link(String p_link) { // Corrected setter
+        this.p_link = p_link;
+    }
 
-	public String getVideo() {
-		return y_link;
-	}
+    public String getVideo() {
+        return y_link;
+    }
 
-	public void setVideo(String video) {
-		this.y_link = video;
-	}
+    public void setY_link(String y_link) { // Corrected setter
+        this.y_link = y_link;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public int getPrice() {
-		return price;
-	}
+    public int getPrice() {
+        return price;
+    }
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
-	public String getTutor() {
-		return instructor;
-	}
+    public String getTutor() {
+        return instructor;
+    }
 
-	public void setTutor(String tutor) {
-		this.instructor = tutor;
-	}
-
-    
+    public void setInstructor(String instructor) { // Corrected setter
+        this.instructor = instructor;
+    }
 }
