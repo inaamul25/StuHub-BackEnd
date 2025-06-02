@@ -30,6 +30,10 @@ public class QuestionController {
     public ResponseEntity<String> addQuestion(@RequestBody QuestionRequest questionRequest) {
         Course course = courseRepository.findById(questionRequest.getCourseId()).orElse(null);
 
+        if (course == null) {
+            return new ResponseEntity<>("Course not found", HttpStatus.BAD_REQUEST);
+        }
+
         Questions question = new Questions();
         question.setQuestion(questionRequest.getQuestion());
         question.setOption1(questionRequest.getOption1());
@@ -43,7 +47,7 @@ public class QuestionController {
 
         return new ResponseEntity<>("Question added successfully", HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/{courseId}")
     public ResponseEntity<List<Questions>> getAllQuestionsForCourse(@PathVariable Long courseId) {
         Course course = courseRepository.findById(courseId).orElse(null);
@@ -55,5 +59,4 @@ public class QuestionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }

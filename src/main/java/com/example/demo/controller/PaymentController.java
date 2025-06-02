@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PaymentRequestDTO;
+import com.example.demo.dto.PaymentResponseDTO;
 import com.example.demo.service.PaymentService;
 import com.razorpay.RazorpayException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,48 +14,32 @@ import java.util.Map;
 @RequestMapping("/api/payments")
 public class PaymentController {
 
-    private final PaymentService paymentService;
-
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
+    @Autowired
+    private PaymentService paymentService;
 
     // Create Razorpay order
-    @PostMapping("/create-order")
-    public ResponseEntity<?> createPaymentOrder(
-            @RequestParam Long userId,
-            @RequestParam Long courseId,
-            @RequestParam Double amount) {
+    @PostMapping("/createOrder")
+    public ResponseEntity<?> createOrder(@RequestBody PaymentRequestDTO paymentRequestDTO) {
         try {
-            String orderId = paymentService.createPaymentOrder(userId, courseId, amount);
-            return ResponseEntity.ok(Map.of("orderId", orderId, "amount", amount));
+            PaymentResponseDTO responseDTO = paymentService.createOrder(paymentRequestDTO);
+            return ResponseEntity.ok(responseDTO);
         } catch (RazorpayException e) {
-            return ResponseEntity.badRequest().body("Error creating order: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error creating order: " + e.getMessage());
         }
     }
 
-    // Update payment status (optional, can be used if you want manual update)
-    @PostMapping("/update-status")
-    public ResponseEntity<?> updatePaymentStatus(
-            @RequestParam String transactionId,
-            @RequestParam String status) {
+    // Verify payment and save details
+    @PostMapping("/verify")
+    public ResponseEntity<String> verifyPayment(@RequestBody Map<String, String> paymentDetails) {
         try {
-            paymentService.updatePaymentStatus(transactionId, status);
-            return ResponseEntity.ok("Payment status updated");
+            paymentService.savePaymentDetails(
+                    paymentDetails.get("razorpayOrderId"),
+                    paymentDetails.get("razorpayPaymentId"),
+                    paymentDetails.get("razorpaySignature")
+            );
+            return ResponseEntity.ok("Payment verified and saved successfully.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
-    }
-
-    // Verify payment after payment success
-    @PostMapping("/verify-payment")
-    public ResponseEntity<Boolean> verifyPayment(@RequestBody Map<String, String> payload) {
-        String paymentId = payload.get("paymentId");
-        try {
-            boolean isVerified = paymentService.verifyPayment(paymentId);
-            return ResponseEntity.ok(isVerified);
-        } catch (RazorpayException e) {
-            return ResponseEntity.status(500).body(false);
+            return ResponseEntity.status(400).body("Payment verification failed: " + e.getMessage());
         }
     }
 }

@@ -1,44 +1,42 @@
 package com.example.demo.entity;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("course_id")
     private Long course_id;
+
     @JsonProperty("course_name")
     private String course_name;
-    private int price;
+
+    @JsonProperty("price")
+    private double price;
+
     @JsonProperty("instructor")
     private String instructor;
+
+    @Lob
     private String description;
-    @JsonProperty("p_link")
-    private String p_link;
+
+    private String p_link;  // No @JsonProperty here
+
     @JsonProperty("y_link")
     private String y_link;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Feedback> feedbacks;
-    
+
     @OneToMany(mappedBy = "course")
     @JsonIgnore
     private List<Questions> questions;
-
-    public List<Questions> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Questions> questions) {
-        this.questions = questions;
-    }
 
     public Long getId() {
         return course_id;
@@ -56,28 +54,20 @@ public class Course {
         this.course_name = courseName;
     }
 
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
+    public double getPrice() {
+        return price;
     }
 
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getPhoto() {
-        return p_link;
+    public String getTutor() {
+        return instructor;
     }
 
-    public void setP_link(String p_link) { // Corrected setter
-        this.p_link = p_link;
-    }
-
-    public String getVideo() {
-        return y_link;
-    }
-
-    public void setY_link(String y_link) { // Corrected setter
-        this.y_link = y_link;
+    public void setTutor(String tutor) {
+        this.instructor = tutor;
     }
 
     public String getDescription() {
@@ -88,19 +78,36 @@ public class Course {
         this.description = description;
     }
 
-    public int getPrice() {
-        return price;
+    @JsonProperty("p_link")
+    public String getPhoto() {
+        return "http://localhost:8080/uploads/" + p_link;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPhoto(String photo) {
+        this.p_link = photo;
     }
 
-    public String getTutor() {
-        return instructor;
+    public String getVideo() {
+        return y_link;
     }
 
-    public void setInstructor(String instructor) { // Corrected setter
-        this.instructor = instructor;
+    public void setVideo(String video) {
+        this.y_link = video;
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+
+    public List<Questions> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Questions> questions) {
+        this.questions = questions;
     }
 }

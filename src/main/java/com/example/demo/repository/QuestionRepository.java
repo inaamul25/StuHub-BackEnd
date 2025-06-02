@@ -8,6 +8,5 @@ import com.example.demo.entity.Course;
 import com.example.demo.entity.Questions;
 
 public interface QuestionRepository extends JpaRepository<Questions, Long> {
-
-	List<Questions> findByCourse(Course course); 
+    List<Questions> findByCourse(Course course);
 }
